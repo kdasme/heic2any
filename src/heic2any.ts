@@ -5,6 +5,11 @@ const supportedMIMETypes = ["image/png", "image/jpeg", "image/gif"];
 
 type ResultType = "Blob" | "ImageData";
 
+const Blob = require("cross-blob");
+
+// Global patch (to support external modules like is-blob).
+globalThis.Blob = Blob;
+
 const utils = {
 	blobToDataURL: function (blob: Blob): Promise<string> {
 		return new Promise((resolve, reject) => {
