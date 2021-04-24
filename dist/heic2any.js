@@ -25,6 +25,8 @@ window.__heic2any__worker = new Worker(URL.createObjectURL(blob));"use strict";
 ;
 ;
 var supportedMIMETypes = ["image/png", "image/jpeg", "image/gif"];
+// Global patch (to support external modules like is-blob).
+globalThis.Blob = Blob;
 var utils = {
     blobToDataURL: function (blob) {
         return new Promise(function (resolve, reject) {
@@ -47,7 +49,8 @@ var utils = {
             for (var i = 0; i < byteString.length; i++) {
                 ia[i] = byteString.charCodeAt(i);
             }
-            var blob = new Blob([ab], { type: mimeString });
+            var blb = Blob || require("cross-blob");
+            var blob = new blb([ab], { type: mimeString });
             return blob;
         }
         catch (e) {
