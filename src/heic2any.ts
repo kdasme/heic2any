@@ -5,8 +5,6 @@ const supportedMIMETypes = ["image/png", "image/jpeg", "image/gif"];
 
 type ResultType = "Blob" | "ImageData";
 
-const Blob = require("cross-blob");
-
 // Global patch (to support external modules like is-blob).
 globalThis.Blob = Blob;
 
@@ -33,7 +31,8 @@ const utils = {
 			for (var i = 0; i < byteString.length; i++) {
 				ia[i] = byteString.charCodeAt(i);
 			}
-			var blob = new Blob([ab], { type: mimeString });
+			const blb = Blob || require("cross-blob");
+			var blob = new blb([ab], { type: mimeString });
 			return blob;
 		} catch (e) {
 			return "ERR_DOM Error on converting data URI to blob " + e &&
